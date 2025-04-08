@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:14
+    container_name: fund-postgres
+    restart: always
+    environment:
+      POSTGRES_USER: go_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: funds
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build: .
+    container_name: dream-walk
+    ports:
+      - "8080:8080"
+    env_file:
+      - .env
+    depends_on:
+      - db
+
+volumes:
+  pgdata:
